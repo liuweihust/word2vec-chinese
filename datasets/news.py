@@ -4,11 +4,13 @@ from __future__ import print_function
 import jieba
 import time
 
-RAWFILE="./raw/raw_news.txt"
-PARSEDFILE="./data/parsed_news.txt"
+RawFile="./raw/raw_news.txt"
+ParsedFile="./data/parsed_news.txt"
+GensimFile="./data/txt_news.txt"
+VectorFile="./data/vector_news.txt"
 
 def processraw():
-	content = open(RAWFILE,"rb").read()
+	content = open(RawFile,"rb").read()
 	words = " ".join(jieba.cut(content))
 
 	t1 = time.time()
@@ -17,8 +19,14 @@ def processraw():
         t2 = time.time()
         tm_cost = t2-t1
 
-        log_f = open(PARSEDFILE,"wb")
+        log_f = open(ParsedFile,"wb")
         log_f.write(words.encode('utf-8'))
 
 def getparsed():
-	return PARSEDFILE
+	return ParsedFile
+
+def getmodeltxt():
+	return GensimFile
+
+def getmodelvector():
+	return VectorFile

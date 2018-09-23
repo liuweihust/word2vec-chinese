@@ -5,6 +5,7 @@ import multiprocessing
 import argparse
 from gensim.models import Word2Vec
 from gensim.models.word2vec import LineSentence
+from datasets import data_factory
 
 #################### config ###################
 #data = "../data/review_douban_movie.tsv.removeword"
@@ -12,6 +13,7 @@ from gensim.models.word2vec import LineSentence
 #data = "../data/zhidao_dataneg.tsv.removeword"
 data = "../data/wv_train.data"
 parser = argparse.ArgumentParser()
+parser.add_argument("-dataset",       type=str, default='news', help="dataset name")
 parser.add_argument("-train",       type=str, default=data, help="Use text data from file TRAIN to train the model")
 parser.add_argument("-size",        type=int, default=300,  help="Set size of word vectors; default is 100")
 parser.add_argument("-window",      type=int, default=5,    help="Set max skip length WINDOW between words; default is 5")
@@ -48,7 +50,8 @@ logger = logging.getLogger()
 logger.info("running train process in data: %s" % args.train)
 
 
-model = Word2Vec(LineSentence(inpputfile), 
+dc = data_factory.get_dataset(args.dataset)
+model = Word2Vec(LineSentence(dc.getparsed()), 
     size=args.size, 
     window=args.window, 
     min_count=args.min_count,   # with 0.35 billion corpus, #3000 can retain 9228 unique words
@@ -62,7 +65,7 @@ model = Word2Vec(LineSentence(inpputfile),
 
 # trim unneeded model memory = use(much) less RAM
 # model.init_sims(replace=True)
-model.save(outputfile1)
-model.wv.save_word2vec_format(outputfile2, binary=False)
+model.save(dc.getmodeltxt())
+model.wv.save_word2vec_format(dc.getmodelvector(), binary=False)
 logger.info("Saved model in " + outputfile1)
 logger.info("Saved vector in " + outputfile2)
