@@ -6,7 +6,7 @@ import time
 
 RawFile="./raw/raw_news.txt"
 ParsedFile="./data/parsed_news.txt"
-GensimFile="./data/txt_news.txt"
+GensimFile="./data/model_news.txt"
 VectorFile="./data/vector_news.txt"
 
 def processraw():
@@ -25,8 +25,8 @@ def processraw():
 def getparsed():
 	return ParsedFile
 
-def getmodeltxt():
+def getmodelfile():
 	return GensimFile
 
-def getmodelvector():
+def getvectorfile():
 	return VectorFile
